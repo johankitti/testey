@@ -1,6 +1,6 @@
 {
   "name": "testey",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple test scanning tool.",
   "main": "test-scanner.js",
   "scripts": {

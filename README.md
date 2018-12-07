@@ -1,7 +1,7 @@
 # testey
 
-[![npm (scoped)](https://img.shields.io/npm/v/@bamblehorse/tiny.svg)](https://www.npmjs.com/package/@bamblehorse/tiny)
-[![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/@bamblehorse/tiny.svg)](https://www.npmjs.com/package/@bamblehorse/tiny)
+[![npm (scoped)](https://img.shields.io/npm/v/testey.svg)](https://www.npmjs.com/package/testey)
+[![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/testey.svg)](https://www.npmjs.com/package/testey)
 
 Removes all spaces from a string.
 

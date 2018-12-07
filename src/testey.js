@@ -1,8 +1,13 @@
-const fs = require('fs')
+import fs from 'fs'
 const chalk = require('chalk')
+const parseConfig = require('./parseConfig')
+const defaultConfig = require('../defaultConfig')
 
+const { log } = console
 const { argv } = process
-const paths = argv.splice(2)
+const config = parseConfig(argv, defaultConfig)
+
+const { paths, ignoreFolders, relativePath } = config
 paths.forEach(path => {
   try {
     fs.readdirSync(path)
@@ -14,30 +19,29 @@ paths.forEach(path => {
     }
   }
 })
-const ignores = ['__tests__', 'node_modules']
 
 let fwot = []
-
 let fwt = []
 
 const scanForTests = currPath => {
   try {
     fs.readdirSync(currPath).forEach(path => {
-      if (!ignores.includes(path)) {
+      if (!ignoreFolders.includes(path)) {
         scanForTests(`${currPath}/${path}`)
       }
     })
   } catch (err) {
     if (
-      !currPath.endsWith('spec.js') &&
-      !currPath.endsWith('min.js') &&
-      !currPath.endsWith('config.js') &&
-      !currPath.endsWith('dev.js') &&
+      !currPath.endsWith('.spec.js') &&
+      !currPath.endsWith('.test.js') &&
+      !currPath.endsWith('.min.js') &&
+      !currPath.endsWith('.config.js') &&
+      !currPath.endsWith('.dev.js') &&
       currPath.endsWith('.js')
     ) {
       const pathParts = currPath.split('/')
       const testFileName = pathParts[pathParts.length - 1]
-      const pathNameToTest = `${currPath.split(`/${testFileName}`).join('')}/__tests__/${testFileName.split('.')[0]}.spec.js`
+      const pathNameToTest = `${currPath.split(`/${testFileName}`).join('')}/${relativePath}${testFileName.split('.')[0]}${config.fileEnd}`
       try {
         fs.readFileSync(pathNameToTest)
         fwt.push(currPath)
@@ -48,10 +52,11 @@ const scanForTests = currPath => {
   }
 }
 
+log('')
 const results = paths.reduce((agg, path) => {
   fwot = []
   fwt = []
-  console.log(`Scanning ${path} for tests...`)
+  log(chalk.white.bgBlue(` Scanning ${path} for tests... `))
   scanForTests(path)
   return {
     ...agg,
@@ -62,28 +67,31 @@ const results = paths.reduce((agg, path) => {
   }
 }, {})
 
-console.log('')
+log('')
 paths
   .filter(path => !path.endsWith('.js'))
   .forEach(path => {
     const { filesWithoutTests, filesWithTests } = results[path]
     const totalFiles = filesWithTests.length + filesWithoutTests.length
     const fileCoveragePercentage = ((filesWithTests.length / totalFiles) * 100).toFixed(1)
-    console.log('\x1b[36m%s\x1b[0m', `=== Status for ${path} ===`)
+    log(`=== Status for ${path} ===`)
 
-    console.log(`Files with tests ${filesWithTests.length}/${totalFiles} (${fileCoveragePercentage}%)`)
+    const colorWrapper = fileCoveragePercentage === 100 ? chalk.white.bgGreen : chalk.white.bgRed
+    log(`Files with tests ${filesWithTests.length}/${totalFiles} ${colorWrapper(`(${fileCoveragePercentage}%)`)}`)
   })
 
 const singleFilePaths = paths.filter(path => path.endsWith('.js'))
 const singleFilesWithoutTests =
   singleFilePaths.map(path => results[path]).reduce((agg, result) => agg + result.filesWithoutTests.length, 0) > 0
 if (singleFilesWithoutTests) {
-  console.log('\x1b[36m%s\x1b[0m', '=== Files without tests ===')
+  log('=== Files without tests ===')
   singleFilePaths.forEach(path => {
     const { filesWithoutTests } = results[path]
     if (filesWithoutTests.length) {
-      console.log(path)
+      log(chalk.white.bgRed(path))
     }
   })
+} else {
+  log(chalk.black.bgGreen(' All files have tests! '))
 }
-console.log('')
+log('')

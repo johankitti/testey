@@ -70,6 +70,7 @@ paths
     const totalFiles = filesWithTests.length + filesWithoutTests.length
     const fileCoveragePercentage = ((filesWithTests.length / totalFiles) * 100).toFixed(1)
     console.log('\x1b[36m%s\x1b[0m', `=== Status for ${path} ===`)
+
     console.log(`Files with tests ${filesWithTests.length}/${totalFiles} (${fileCoveragePercentage}%)`)
   })
 

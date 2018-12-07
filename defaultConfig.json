@@ -1,5 +1,6 @@
 {
   "relativePath": "__tests__/",
   "fileEnd": ".spec.js",
-  "ignoreFolders": ["test", "__tests__", "node_modules"]
+  "ignoreFolders": ["test", "__tests__", "node_modules", ".git"],
+  "paths": ["./"]
 }

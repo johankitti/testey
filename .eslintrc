@@ -5,8 +5,7 @@
     "ecmaVersion": 2016,
     "sourceType": "module",
     "ecmaFeatures": {
-      "impliedStrict": true,
-      "jsx": true
+      "impliedStrict": true
     }
   },
   "env": {

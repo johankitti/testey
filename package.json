@@ -5,8 +5,10 @@
   "main": "test-scanner.js",
   "scripts": {
     "test": "jest tests/",
-    "eslint": "eslint --fix src",
-    "testey": "nodemon --exec babel-node src/testey"
+    "eslint": "eslint --fix src"
+  },
+  "bin": {
+    "testey": "src/testey.js"
   },
   "husky": {
     "hooks": {

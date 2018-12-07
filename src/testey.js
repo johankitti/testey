@@ -1,4 +1,6 @@
-import fs from 'fs'
+#! /usr/bin/env node
+
+const fs = require('fs')
 const chalk = require('chalk')
 const parseConfig = require('./parseConfig')
 const defaultConfig = require('../defaultConfig')
@@ -91,7 +93,7 @@ if (singleFilesWithoutTests) {
       log(chalk.white.bgRed(path))
     }
   })
-} else {
+} else if (singleFilePaths.length) {
   log(chalk.black.bgGreen(' All files have tests! '))
 }
 log('')

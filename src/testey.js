@@ -17,6 +17,7 @@ paths.forEach(path => {
 const ignores = ['__tests__', 'node_modules']
 
 let fwot = []
+
 let fwt = []
 
 const scanForTests = currPath => {

@@ -5,10 +5,15 @@
   "main": "test-scanner.js",
   "scripts": {
     "test": "node src/testey tests/test-data/jest",
-    "precommit": "lint-staged"
+    "eslint": "eslint --fix src"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
-    "*.{js, scss}": [
+    "*.js": [
       "eslint --fix",
       "prettier --write",
       "git add"
@@ -28,8 +33,12 @@
     "chalk": "^2.4.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.9.0",
+    "eslint-config-prettier": "^3.3.0",
+    "husky": "^1.2.0",
     "lint-staged": "^8.1.0",
     "prettier": "^1.15.3"
   }

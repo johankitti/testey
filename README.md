@@ -26,6 +26,9 @@ $ npm install testey
 ## CLI options
 
 ```
+[USAGE]
+    testey [PATHS] [FLAGS]
+
 [OPTIONS]
     -fe     File ending
     -rp     Relative path to test file

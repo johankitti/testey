@@ -9,7 +9,7 @@ const { log } = console
 const { argv } = process
 const config = parseConfig(argv, defaultConfig)
 
-const { paths, ignoreFolders, relativePath } = config
+const { paths, ignoreFolders, relativePath, check } = config
 paths.forEach(path => {
   try {
     fs.readdirSync(path)
@@ -26,30 +26,38 @@ let fwot = []
 let fwt = []
 
 const scanForTests = currPath => {
-  try {
-    fs.readdirSync(currPath).forEach(path => {
-      if (!ignoreFolders.includes(path)) {
-        scanForTests(`${currPath}/${path}`)
+  if (
+    !currPath.endsWith('.spec.js') &&
+    !currPath.endsWith('.test.js') &&
+    !currPath.endsWith('.min.js') &&
+    !currPath.endsWith('.config.js') &&
+    !currPath.endsWith('.dev.js') &&
+    currPath.endsWith('.js')
+  ) {
+    const pathParts = currPath.split('/')
+    const testFileName = pathParts[pathParts.length - 1]
+    const pathNameToTest = `${currPath.split(`/${testFileName}`).join('')}/${relativePath}${testFileName.split('.')[0]}${config.fileEnd}`
+
+    try {
+      fs.readFileSync(pathNameToTest)
+      fwt.push(currPath)
+    } catch (error) {
+      fwot.push(currPath)
+      if (check) {
+        throw new Error(`No test file for ${currPath} !`)
       }
-    })
-  } catch (err) {
-    if (
-      !currPath.endsWith('.spec.js') &&
-      !currPath.endsWith('.test.js') &&
-      !currPath.endsWith('.min.js') &&
-      !currPath.endsWith('.config.js') &&
-      !currPath.endsWith('.dev.js') &&
-      currPath.endsWith('.js')
-    ) {
-      const pathParts = currPath.split('/')
-      const testFileName = pathParts[pathParts.length - 1]
-      const pathNameToTest = `${currPath.split(`/${testFileName}`).join('')}/${relativePath}${testFileName.split('.')[0]}${config.fileEnd}`
-      try {
-        fs.readFileSync(pathNameToTest)
-        fwt.push(currPath)
-      } catch (error) {
-        fwot.push(currPath)
-      }
+    }
+  } else {
+    let pathsToTry = []
+    try {
+      pathsToTry = fs.readdirSync(currPath)
+    } catch (err) {
+    } finally {
+      pathsToTry.forEach(path => {
+        if (!ignoreFolders.includes(path)) {
+          scanForTests(`${currPath}/${path}`)
+        }
+      })
     }
   }
 }
@@ -69,18 +77,20 @@ const results = paths.reduce((agg, path) => {
   }
 }, {})
 
-log('')
-log('=== Results ===')
-paths
-  .filter(path => !path.endsWith('.js'))
-  .forEach(path => {
-    const { filesWithoutTests, filesWithTests } = results[path]
-    const totalFiles = filesWithTests.length + filesWithoutTests.length
-    const fileCoveragePercentage = ((filesWithTests.length / (totalFiles || 1)) * 100).toFixed(1)
+const dirPaths = paths.filter(path => !path.endsWith('.js'))
 
-    const colorWrapper = fileCoveragePercentage === 100 ? chalk.white.bgGreen : chalk.white.bgRed
-    log(`${path} ${filesWithTests.length}/${totalFiles} ${colorWrapper(`(${fileCoveragePercentage}%)`)}`)
-  })
+log('')
+if (dirPaths.length) {
+  log('=== Results ===')
+}
+dirPaths.forEach(path => {
+  const { filesWithoutTests, filesWithTests } = results[path]
+  const totalFiles = filesWithTests.length + filesWithoutTests.length
+  const fileCoveragePercentage = !totalFiles ? '100.0' : ((filesWithTests.length / totalFiles) * 100).toFixed(1)
+
+  const colorWrapper = fileCoveragePercentage === '100.0' ? chalk.white.bgGreen : chalk.white.bgRed
+  log(`- ${path} ${filesWithTests.length}/${totalFiles} ${colorWrapper(`(${fileCoveragePercentage}%)`)}`)
+})
 
 const singleFilePaths = paths.filter(path => path.endsWith('.js'))
 const singleFilesWithoutTests =

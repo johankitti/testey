@@ -33,6 +33,12 @@ const parseConfig = (argv, defaultConfig) => {
       return agg
     }
 
+    if (arg === '-c') {
+      return {
+        ...agg,
+        check: true,
+      }
+    }
     return {
       ...agg,
       paths: [...(agg.paths ? agg.paths : []), arg],

@@ -70,16 +70,16 @@ const results = paths.reduce((agg, path) => {
 }, {})
 
 log('')
+log('=== Results ===')
 paths
   .filter(path => !path.endsWith('.js'))
   .forEach(path => {
     const { filesWithoutTests, filesWithTests } = results[path]
     const totalFiles = filesWithTests.length + filesWithoutTests.length
-    const fileCoveragePercentage = ((filesWithTests.length / totalFiles) * 100).toFixed(1)
-    log(`=== Status for ${path} ===`)
+    const fileCoveragePercentage = ((filesWithTests.length / (totalFiles || 1)) * 100).toFixed(1)
 
     const colorWrapper = fileCoveragePercentage === 100 ? chalk.white.bgGreen : chalk.white.bgRed
-    log(`Files with tests ${filesWithTests.length}/${totalFiles} ${colorWrapper(`(${fileCoveragePercentage}%)`)}`)
+    log(`${path} ${filesWithTests.length}/${totalFiles} ${colorWrapper(`(${fileCoveragePercentage}%)`)}`)
   })
 
 const singleFilePaths = paths.filter(path => path.endsWith('.js'))

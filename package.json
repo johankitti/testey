@@ -1,0 +1,26 @@
+{
+  "name": "testey",
+  "version": "1.0.0",
+  "description": "A simple test scanning tool.",
+  "main": "test-scanner.js",
+  "scripts": {
+    "test": "node src/testey tests/test-data/jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johankitti/testey.git"
+  },
+  "author": "Johan Söderberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johankitti/testey/issues"
+  },
+  "homepage": "https://github.com/johankitti/testey#readme",
+  "dependencies": {
+    "chalk": "^2.4.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.9.0"
+  }
+}

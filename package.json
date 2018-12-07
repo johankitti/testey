@@ -4,7 +4,15 @@
   "description": "A simple test scanning tool.",
   "main": "test-scanner.js",
   "scripts": {
-    "test": "node src/testey tests/test-data/jest"
+    "test": "node src/testey tests/test-data/jest",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js, scss}": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -21,6 +29,8 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.9.0"
+    "eslint": "^5.9.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3"
   }
 }

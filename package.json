@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "tdd": "mocha --watch",
-    "eslint": "eslint --fix src"
+    "eslint": "eslint --fix src --max-warnings 0"
   },
   "bin": {
     "testey": "src/testey.js"

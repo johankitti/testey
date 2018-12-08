@@ -28,17 +28,17 @@ const scanForTests = (currPath, config) => {
         return true
       })
       .join('/')
-    console.log(currPath)
-    console.log(pathNameToTest)
+    // console.log(currPath)
+    // console.log(pathNameToTest)
     try {
       fs.readFileSync(pathNameToTest)
       if (list) {
-        console.log(`  - ${currPath} ${chalk.green('✔')}`)
+        console.log(`  - ${chalk.green('✔')} ${currPath}`)
       }
       fwt.push(currPath)
     } catch (error) {
       if (list) {
-        console.log(chalk.grey(`  - ${currPath} ${chalk.red('✖')}`))
+        console.log(chalk.grey(`  - ${chalk.red('✖')} ${currPath}`))
       }
       fwot.push(currPath)
       if (check) {

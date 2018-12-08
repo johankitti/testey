@@ -7,8 +7,9 @@ const main = require('./main')
 const defaultConfig = require('../defaultConfig')
 
 const { log } = console
-const { argv } = process
-const config = parseConfig(argv.splice(2), defaultConfig)
+const [, , ...args] = process.argv
+console.log(args)
+const config = parseConfig(args, defaultConfig)
 
 const { paths } = config
 paths.forEach(path => {

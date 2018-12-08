@@ -3,13 +3,14 @@
 const fs = require('fs')
 const chalk = require('chalk')
 const parseConfig = require('./parseConfig')
+const main = require('./main')
 const defaultConfig = require('../defaultConfig')
 
 const { log } = console
 const { argv } = process
 const config = parseConfig(argv, defaultConfig)
 
-const { paths, ignoreFolders, relativePath, check } = config
+const { paths } = config
 paths.forEach(path => {
   try {
     fs.readdirSync(path)
@@ -22,63 +23,10 @@ paths.forEach(path => {
   }
 })
 
-let fwot = []
-let fwt = []
-
-const scanForTests = currPath => {
-  if (
-    !currPath.endsWith('.spec.js') &&
-    !currPath.endsWith('.test.js') &&
-    !currPath.endsWith('.min.js') &&
-    !currPath.endsWith('.config.js') &&
-    !currPath.endsWith('.dev.js') &&
-    currPath.endsWith('.js')
-  ) {
-    const pathParts = currPath.split('/')
-    const testFileName = pathParts[pathParts.length - 1]
-    const pathNameToTest = `${currPath.split(`/${testFileName}`).join('')}/${relativePath}${testFileName.split('.')[0]}${config.fileEnd}`
-
-    try {
-      fs.readFileSync(pathNameToTest)
-      fwt.push(currPath)
-    } catch (error) {
-      fwot.push(currPath)
-      if (check) {
-        throw new Error(`No test file for ${currPath} !`)
-      }
-    }
-  } else {
-    let pathsToTry = []
-    try {
-      pathsToTry = fs.readdirSync(currPath)
-    } catch (err) {
-    } finally {
-      pathsToTry.forEach(path => {
-        if (!ignoreFolders.includes(path)) {
-          scanForTests(`${currPath}/${path}`)
-        }
-      })
-    }
-  }
-}
-
-log('')
-const results = paths.reduce((agg, path) => {
-  fwot = []
-  fwt = []
-  log(chalk.white.bgBlue(` Scanning ${path} for tests... `))
-  scanForTests(path)
-  return {
-    ...agg,
-    [path]: {
-      filesWithoutTests: fwot,
-      filesWithTests: fwt,
-    },
-  }
-}, {})
+// Run main program
+const results = main(config)
 
 const dirPaths = paths.filter(path => !path.endsWith('.js'))
-
 log('')
 if (dirPaths.length) {
   log('=== Results ===')
@@ -91,7 +39,6 @@ dirPaths.forEach(path => {
   const colorWrapper = fileCoveragePercentage === '100.0' ? chalk.white.bgGreen : chalk.white.bgRed
   log(`- ${path} ${filesWithTests.length}/${totalFiles} ${colorWrapper(`(${fileCoveragePercentage}%)`)}`)
 })
-
 const singleFilePaths = paths.filter(path => path.endsWith('.js'))
 const singleFilesWithoutTests =
   singleFilePaths.map(path => results[path]).reduce((agg, result) => agg + result.filesWithoutTests.length, 0) > 0

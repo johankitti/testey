@@ -3,7 +3,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/testey.svg)](https://www.npmjs.com/package/testey)
 [![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/chalk@2.4.1.svg)](https://www.npmjs.com/package/testey)
 
-Makes sure your javascipt files have a corresponding test file.
+Makes sure your javascipt files have a corresponding test files.
 
 ## Install
 

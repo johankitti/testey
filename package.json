@@ -1,10 +1,11 @@
 {
   "name": "testey",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "A simple test scanning tool.",
-  "main": "test-scanner.js",
+  "main": "src/testey.js",
   "scripts": {
-    "test": "jest tests/",
+    "test": "mocha",
+    "tdd": "mocha --watch",
     "eslint": "eslint --fix src"
   },
   "bin": {
@@ -19,13 +20,9 @@
     "*.js": [
       "eslint --fix",
       "prettier --write",
+      "mocha",
       "git add"
     ]
-  },
-  "jest": {
-    "transform": {
-      ".js": "babel-jest"
-    }
   },
   "repository": {
     "type": "git",
@@ -41,16 +38,13 @@
     "chalk": "^2.4.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.0",
-    "@babel/node": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
     "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
     "eslint": "^5.9.0",
     "eslint-config-prettier": "^3.3.0",
     "husky": "^1.2.0",
-    "jest": "^23.6.0",
     "lint-staged": "^8.1.0",
+    "mocha": "^5.2.0",
     "prettier": "^1.15.3"
   }
 }

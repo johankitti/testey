@@ -6,7 +6,8 @@ const defaultConfig = require('../defaultConfig')
 
 describe('jest', () => {
   it('should find test files and test files missing', () => {
-    const config = parseConfig(['test-data/jest', '-fe', '.spec.js', '-rp', './__tests__'], defaultConfig)
+    const config = parseConfig(['test-data/jest/', '-fe', '.spec.js', '-rp', './__tests__'], defaultConfig)
+    console.log(config)
     const results = main(config)
     expect(results).to.deep.equal({
       'test-data/jest': {
@@ -47,7 +48,6 @@ describe('samefolder', () => {
 describe('prevfolder', () => {
   it('should find test files and test files missing', () => {
     const config = parseConfig(['test-data/prevfolder/test', '-fe', '.test.js', '-rp', '../'], defaultConfig)
-    console.log(config)
     const results = main(config)
     expect(results).to.deep.equal({
       'test-data/prevfolder/test': {

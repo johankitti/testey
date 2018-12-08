@@ -45,9 +45,10 @@ const parseConfig = (args, defaultConfig) => {
         check: true,
       }
     }
+    const newPath = arg.endsWith('/') ? arg.slice(0, -1) : arg
     return {
       ...agg,
-      paths: [...(agg.paths ? agg.paths : []), arg],
+      paths: [...(agg.paths ? agg.paths : []), newPath],
     }
   }, {})
 

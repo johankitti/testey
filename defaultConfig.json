@@ -3,5 +3,6 @@
   "fileEnd": ".spec.js",
   "ignoreFolders": ["test", "__tests__", "node_modules", ".git"],
   "paths": ["./"],
-  "check": false
+  "check": false,
+  "list": false
 }

@@ -10,14 +10,6 @@ const { log } = console
 const [, , ...args] = process.argv
 const config = parseConfig(args, defaultConfig)
 
-const listFilesWithNoTestFile = files => {
-  console.log('')
-  console.log('Files missing test file:')
-  files.forEach(file => {
-    console.log(chalk.grey(`  - ${file}`))
-  })
-}
-
 const { paths } = config
 paths.forEach(path => {
   try {
@@ -46,9 +38,6 @@ dirPaths.forEach(path => {
 
   const colorWrapper = fileCoveragePercentage === '100.0' ? chalk.white.bgGreen : chalk.white.bgRed
   log(`${path} ${filesWithTests.length}/${totalFiles} ${colorWrapper(`(${fileCoveragePercentage}%)`)}`)
-  if (config.list) {
-    listFilesWithNoTestFile(filesWithoutTests)
-  }
 })
 const singleFilePaths = paths.filter(path => path.endsWith('.js'))
 const singleFilesWithoutTests =

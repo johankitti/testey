@@ -2,7 +2,7 @@ const parseConfig = (args, defaultConfig) => {
   const configArgs = args.reduce((agg, arg, index) => {
     if (arg === '-rp') {
       let path = args[index + 1]
-      if (path.startsWith('.')) {
+      if (!path.startsWith('..') && path.startsWith('.')) {
         path = path.slice(1)
       }
       if (path === '/') {
@@ -11,8 +11,8 @@ const parseConfig = (args, defaultConfig) => {
         if (path.startsWith('/')) {
           path = path.slice(1)
         }
-        if (!path.endsWith('/')) {
-          path = `${path}/`
+        if (path.endsWith('/')) {
+          path = path.slice(0, -1)
         }
       }
       return {

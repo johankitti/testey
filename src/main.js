@@ -6,7 +6,7 @@ let fwot = []
 let fwt = []
 
 const scanForTests = (currPath, config) => {
-  const { paths, ignoreFolders, relativePath, check } = config
+  const { paths, ignoreFolders, relativePath, check, list } = config
   if (
     !currPath.endsWith('.spec.js') &&
     !currPath.endsWith('.test.js') &&
@@ -17,7 +17,7 @@ const scanForTests = (currPath, config) => {
   ) {
     const pathParts = currPath.split('/')
     const testFileName = pathParts[pathParts.length - 1]
-    const pathToTestParts = `${currPath.split(`/${testFileName}`).join('')}/${relativePath}${testFileName.split('.')[0]}${
+    const pathToTestParts = `${currPath.split(`/${testFileName}`).join('')}/${relativePath}/${testFileName.split('.')[0]}${
       config.fileEnd
     }`.split('/')
     const pathNameToTest = pathToTestParts
@@ -28,12 +28,18 @@ const scanForTests = (currPath, config) => {
         return true
       })
       .join('/')
-    // console.log(currPath)
-    // console.log(pathNameToTest)
+    console.log(currPath)
+    console.log(pathNameToTest)
     try {
       fs.readFileSync(pathNameToTest)
+      if (list) {
+        console.log(`  - ${currPath} ${chalk.green('✔')}`)
+      }
       fwt.push(currPath)
     } catch (error) {
+      if (list) {
+        console.log(chalk.grey(`  - ${currPath} ${chalk.red('✖')}`))
+      }
       fwot.push(currPath)
       if (check) {
         throw new Error(`No test file for ${currPath} !`)

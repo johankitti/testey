@@ -4,10 +4,10 @@ const main = require('../src/main')
 const parseConfig = require('../src/parseConfig')
 const defaultConfig = require('../defaultConfig')
 
-describe('jest', () => {
+describe('jest files', () => {
   it('should find test files and test files missing', () => {
     const config = parseConfig(
-      ['test-data/jest/test1.js', 'test-data/jest/test2.js', '-fe', '.spec.js', '-rp', './__tests__'],
+      ['test-data/jest/test1.js', 'test-data/jest/test2.js', '-fe', '.spec.js', '-rp', './__tests__/'],
       defaultConfig,
     )
     const results = main(config)

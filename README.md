@@ -30,7 +30,7 @@ $ npm install testey
     testey [PATHS] [FLAGS]
 
 [OPTIONS]
-    -l      List all files with missing test files
+    -l      List all files tested
     -c      Check, will exit with error if file missing corresponding test
     -fe     File ending
     -rp     Relative path to test file

@@ -8,7 +8,6 @@ const defaultConfig = require('../defaultConfig')
 
 const { log } = console
 const [, , ...args] = process.argv
-console.log(args)
 const config = parseConfig(args, defaultConfig)
 
 const { paths } = config

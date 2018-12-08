@@ -1,11 +1,8 @@
-const parseConfig = (argv, defaultConfig) => {
-  const args = argv.splice(2)
+const parseConfig = (args, defaultConfig) => {
   const configArgs = args.reduce((agg, arg, index) => {
     if (arg === '-rp') {
       let path = args[index + 1]
-      if (path.startsWith('.')) {
-        path = path.slice(1)
-      }
+
       if (path === '/') {
         path = ''
       } else {

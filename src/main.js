@@ -28,6 +28,8 @@ const scanForTests = (currPath, config) => {
         return true
       })
       .join('/')
+    // console.log(currPath)
+    // console.log(pathNameToTest)
     try {
       fs.readFileSync(pathNameToTest)
       fwt.push(currPath)

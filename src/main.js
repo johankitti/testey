@@ -29,7 +29,7 @@ const scanForTests = (currPath, config) => {
       })
       .join('/')
     console.log(currPath)
-    // console.log(pathNameToTest)
+    console.log(pathNameToTest)
     try {
       fs.readFileSync(pathNameToTest)
       if (list) {

@@ -20,8 +20,7 @@
     "*.js": [
       "eslint --fix --max-warnings 0",
       "prettier --write",
-      "mocha",
-      "git add"
+      "mocha"
     ]
   },
   "repository": {
